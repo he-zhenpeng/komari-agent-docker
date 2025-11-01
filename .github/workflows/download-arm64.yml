@@ -1,6 +1,6 @@
 # .github/workflows/sync_release.yml
 
-name: Sync Fixed-Name Release by Tag
+name: Download-arm64 Fixed-Name Release by Tag
 
 on:
   workflow_dispatch:
