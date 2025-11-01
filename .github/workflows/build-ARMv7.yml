@@ -1,0 +1,44 @@
+name: Build ARMv7 Docker Image
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-armv7:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Prepare binary
+        run: |
+          mkdir -p .
+          # 假设你已将 komari-agent-linux-arm 上传到仓库根目录
+          chmod +x komari-agent-linux-arm
+
+      - name: Build and push ARMv7 image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          platforms: linux/arm/v7
+          push: true
+          build-args: |
+            TARGETOS=linux
+            TARGETARCH=arm
+          tags: skylerhe/komari-agent:armv7
