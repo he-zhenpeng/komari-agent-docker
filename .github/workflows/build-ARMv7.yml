@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - '.latest_version_armv7'
   workflow_dispatch:
 
 jobs:
